@@ -12,7 +12,7 @@ import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
 
 
-const API_KEY = "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"; //process.env.OPENAI_API_KEY;
+const API_KEY = process.env.OPENAI_API_KEY;
 // "Explain things like you would to a 10 year old learning how to code."
 const systemMessage = { //  Explain things like you're talking to a software professional with 5 years of experience.
   "role": "system", "content": "Explain things in Bengali language like Bengali is your mothertongue."
@@ -23,7 +23,7 @@ export default function Home() {
 
   const [messages, setMessages] = useState([
     {
-      message: "হ্যালো, আমি বাংলা জিপিটি| আমকে যে কোন কিছু জিজ্ঞেস করুন| ",
+      message: "হ্যালো, আমি বাংলা জিপিটি | আমকে যে কোন কিছু জিজ্ঞেস করুন | ",
       sentTime: "just now",
       sender: "ChatGPT"
     }
@@ -98,9 +98,28 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
         <div className="flex flex-col items-center justify-between">
-          <h1 className="fixed text-slate-950  text-4xl left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-emerald-300 from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-emerald-50 lg:p-4 lg:dark:bg-zinc-800/30">
+          <h1 className="fixed text-slate-950  text-4xl mb-5 left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-emerald-300 from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-emerald-50 lg:p-4 lg:dark:bg-zinc-800/30">
           বাংলা জিপিটি 
           </h1>
+          <div className="flex h-{700} w-{600}">
+            <MainContainer>
+              <ChatContainer>       
+                <MessageList 
+                  scrollBehavior="smooth" 
+                  typingIndicator={isTyping ? <TypingIndicator content="ChatGPT is typing" /> : null}
+                >
+                  {messages.map((message, i) => {
+                    console.log(message)
+                    return <Message key={i} model={message} />
+                  })}
+                </MessageList>
+                <MessageInput placeholder="Type message here" onSend={handleSend} />        
+              </ChatContainer>
+            </MainContainer>
+          </div>
+          <p className="flex mt-1 p-2 text-2xl">
+          নিচে বাংলায় লিখে উপরে কপি পেস্ট করুন :
+          </p>
           <ReactTransliterate
             className = "flex flex-grow bg-red-100 p-2 text-lg mt-4"
             // renderComponent={(props) => <textarea {...props} />}
@@ -115,24 +134,7 @@ export default function Home() {
             }}
             lang="bn"
           />
-
-          <div className="flex h-{700} w-{600}">
-                  <MainContainer>
-                    <ChatContainer>       
-                      <MessageList 
-                        scrollBehavior="smooth" 
-                        typingIndicator={isTyping ? <TypingIndicator content="ChatGPT is typing" /> : null}
-                      >
-                        {messages.map((message, i) => {
-                          console.log(message)
-                          return <Message key={i} model={message} />
-                        })}
-                      </MessageList>
-                      <MessageInput placeholder="Type message here" onSend={handleSend} />        
-                    </ChatContainer>
-                  </MainContainer>
-                </div>
-                  </div>
+        </div>
       </div>
     </main>
   )
